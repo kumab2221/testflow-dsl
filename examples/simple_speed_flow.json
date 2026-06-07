@@ -1,0 +1,97 @@
+{
+  "dslVersion": "0.1.0",
+  "metadata": {
+    "name": "Simple TestFlow DSL sample",
+    "createdBy": "team",
+    "createdAt": "2026-06-07",
+    "updatedAt": "2026-06-07"
+  },
+  "flows": [
+    {
+      "id": "FLOW-001",
+      "name": "Vehicle speed test",
+      "description": "60秒以内にvehicleSpeedが100km/hを超えることを確認する。未達でも次へ進み、結果はFAILとする。",
+      "evaluation": {
+        "enabled": true,
+        "aggregation": "failIfAnyBlockFails"
+      },
+      "nodes": [
+        {
+          "id": "START",
+          "type": "start",
+          "ui": {
+            "position": {
+              "x": 0,
+              "y": 100
+            },
+            "label": "Start"
+          }
+        },
+        {
+          "id": "BLOCK-001",
+          "type": "block",
+          "data": {
+            "description": "60秒以内に100km/hを超えること"
+          },
+          "ui": {
+            "position": {
+              "x": 200,
+              "y": 100
+            },
+            "label": "Speed Check"
+          }
+        },
+        {
+          "id": "END",
+          "type": "end",
+          "ui": {
+            "position": {
+              "x": 500,
+              "y": 100
+            },
+            "label": "End"
+          }
+        }
+      ],
+      "edges": [
+        {
+          "id": "EDGE-001",
+          "source": "START",
+          "target": "BLOCK-001"
+        },
+        {
+          "id": "EDGE-002",
+          "source": "BLOCK-001",
+          "target": "END",
+          "priority": 1,
+          "condition": {
+            "type": "comparison",
+            "left": {
+              "source": "observed",
+              "signal": "vehicleSpeed"
+            },
+            "operator": "greaterThanOrEqual",
+            "right": {
+              "value": 100.0
+            },
+            "unit": "km/h"
+          },
+          "result": "PASS"
+        },
+        {
+          "id": "EDGE-003",
+          "source": "BLOCK-001",
+          "target": "END",
+          "priority": 2,
+          "condition": {
+            "type": "timeout",
+            "clock": "elapsedBlockSimulationTime",
+            "value": 60.0,
+            "unit": "s"
+          },
+          "result": "FAIL"
+        }
+      ]
+    }
+  ]
+}

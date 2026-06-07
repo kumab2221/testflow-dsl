@@ -1,0 +1,14 @@
+{
+  "permissions": {
+    "allow": [
+      "Read(//home/kuma/Desktop/repos/testflow-dsl/src/core/**)",
+      "Read(//data/repos/testflow-dsl/src/core/**)",
+      "Read(//home/kuma/Desktop/repos/testflow-dsl/**)",
+      "Read(//data/repos/testflow-dsl/**)",
+      "Read(//home/kuma/Desktop/repos/testflow-dsl/.claude/**)",
+      "Read(//data/repos/testflow-dsl/.claude/**)",
+      "Bash(git init *)",
+      "Bash(git add *)"
+    ]
+  }
+}

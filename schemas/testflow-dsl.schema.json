@@ -1,0 +1,507 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://example.com/testflow-dsl.schema.json",
+  "title": "TestFlow DSL Schema",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "dslVersion",
+    "flows"
+  ],
+  "properties": {
+    "dslVersion": {
+      "type": "string",
+      "pattern": "^\\d+\\.\\d+\\.\\d+$"
+    },
+    "flows": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "$ref": "#/$defs/Flow"
+      }
+    },
+    "metadata": {
+      "$ref": "#/$defs/Metadata"
+    }
+  },
+  "$defs": {
+    "Id": {
+      "type": "string",
+      "minLength": 1,
+      "pattern": "^[A-Za-z0-9_\\-\\.]+$"
+    },
+    "NonEmptyString": {
+      "type": "string",
+      "minLength": 1
+    },
+    "Metadata": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "name": {
+          "type": "string"
+        },
+        "description": {
+          "type": "string"
+        },
+        "createdBy": {
+          "type": "string"
+        },
+        "createdAt": {
+          "type": "string",
+          "format": "date"
+        },
+        "updatedAt": {
+          "type": "string",
+          "format": "date"
+        }
+      }
+    },
+    "Flow": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "id",
+        "name",
+        "nodes",
+        "edges"
+      ],
+      "properties": {
+        "id": {
+          "$ref": "#/$defs/Id"
+        },
+        "name": {
+          "$ref": "#/$defs/NonEmptyString"
+        },
+        "description": {
+          "type": "string"
+        },
+        "nodes": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "$ref": "#/$defs/Node"
+          }
+        },
+        "edges": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/Edge"
+          }
+        },
+        "evaluation": {
+          "$ref": "#/$defs/Evaluation"
+        }
+      }
+    },
+    "Node": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "id",
+        "type"
+      ],
+      "properties": {
+        "id": {
+          "$ref": "#/$defs/Id"
+        },
+        "type": {
+          "type": "string",
+          "enum": [
+            "start",
+            "end",
+            "block",
+            "action",
+            "condition",
+            "timer"
+          ]
+        },
+        "data": {
+          "type": "object",
+          "additionalProperties": true
+        },
+        "ui": {
+          "$ref": "#/$defs/Ui"
+        }
+      }
+    },
+    "Ui": {
+      "type": "object",
+      "additionalProperties": true,
+      "properties": {
+        "position": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "x",
+            "y"
+          ],
+          "properties": {
+            "x": {
+              "type": "number"
+            },
+            "y": {
+              "type": "number"
+            }
+          }
+        },
+        "label": {
+          "type": "string"
+        },
+        "collapsed": {
+          "type": "boolean"
+        }
+      }
+    },
+    "Edge": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "id",
+        "source",
+        "target"
+      ],
+      "properties": {
+        "id": {
+          "$ref": "#/$defs/Id"
+        },
+        "source": {
+          "$ref": "#/$defs/Id"
+        },
+        "target": {
+          "$ref": "#/$defs/Id"
+        },
+        "condition": {
+          "$ref": "#/$defs/Condition"
+        },
+        "actions": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/Action"
+          }
+        },
+        "result": {
+          "$ref": "#/$defs/Result"
+        },
+        "priority": {
+          "type": "integer",
+          "minimum": 0
+        }
+      }
+    },
+    "Evaluation": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "enabled"
+      ],
+      "properties": {
+        "enabled": {
+          "type": "boolean"
+        },
+        "aggregation": {
+          "type": "string",
+          "enum": [
+            "failIfAnyBlockFails",
+            "passIfAllBlocksPass",
+            "customExternalEvaluator"
+          ]
+        }
+      },
+      "allOf": [
+        {
+          "if": {
+            "properties": {
+              "enabled": {
+                "const": true
+              }
+            },
+            "required": [
+              "enabled"
+            ]
+          },
+          "then": {
+            "required": [
+              "aggregation"
+            ]
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "enabled": {
+                "const": false
+              }
+            },
+            "required": [
+              "enabled"
+            ]
+          },
+          "then": {
+            "properties": {
+              "aggregation": false
+            }
+          }
+        }
+      ]
+    },
+    "Result": {
+      "type": "string",
+      "enum": [
+        "PASS",
+        "FAIL",
+        "SKIP",
+        "ERROR",
+        "NOT_EVALUATED"
+      ]
+    },
+    "Condition": {
+      "oneOf": [
+        {
+          "$ref": "#/$defs/ComparisonCondition"
+        },
+        {
+          "$ref": "#/$defs/TimeoutCondition"
+        },
+        {
+          "$ref": "#/$defs/ConditionGroup"
+        }
+      ]
+    },
+    "ComparisonCondition": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "type",
+        "left",
+        "operator",
+        "right"
+      ],
+      "properties": {
+        "type": {
+          "const": "comparison"
+        },
+        "left": {
+          "$ref": "#/$defs/Operand"
+        },
+        "operator": {
+          "type": "string",
+          "enum": [
+            "equals",
+            "notEquals",
+            "greaterThan",
+            "greaterThanOrEqual",
+            "lessThan",
+            "lessThanOrEqual",
+            "risingEdge",
+            "fallingEdge"
+          ]
+        },
+        "right": {
+          "$ref": "#/$defs/Operand"
+        },
+        "unit": {
+          "type": "string"
+        },
+        "durationMs": {
+          "type": "number",
+          "minimum": 0
+        }
+      }
+    },
+    "TimeoutCondition": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "type",
+        "clock",
+        "value",
+        "unit"
+      ],
+      "properties": {
+        "type": {
+          "const": "timeout"
+        },
+        "clock": {
+          "type": "string",
+          "enum": [
+            "elapsedBlockSimulationTime",
+            "simulationTime",
+            "wallClockTime",
+            "sampleIndex"
+          ]
+        },
+        "value": {
+          "type": "number",
+          "minimum": 0
+        },
+        "unit": {
+          "type": "string",
+          "enum": [
+            "s",
+            "ms",
+            "sample"
+          ]
+        }
+      }
+    },
+    "ConditionGroup": {
+      "oneOf": [
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "type",
+            "anyOf"
+          ],
+          "properties": {
+            "type": {
+              "const": "anyOf"
+            },
+            "anyOf": {
+              "type": "array",
+              "minItems": 1,
+              "items": {
+                "$ref": "#/$defs/Condition"
+              }
+            }
+          }
+        },
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "type",
+            "allOf"
+          ],
+          "properties": {
+            "type": {
+              "const": "allOf"
+            },
+            "allOf": {
+              "type": "array",
+              "minItems": 1,
+              "items": {
+                "$ref": "#/$defs/Condition"
+              }
+            }
+          }
+        },
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "type",
+            "not"
+          ],
+          "properties": {
+            "type": {
+              "const": "not"
+            },
+            "not": {
+              "$ref": "#/$defs/Condition"
+            }
+          }
+        }
+      ]
+    },
+    "Operand": {
+      "oneOf": [
+        {
+          "$ref": "#/$defs/SignalOperand"
+        },
+        {
+          "$ref": "#/$defs/ValueOperand"
+        }
+      ]
+    },
+    "SignalOperand": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "source",
+        "signal"
+      ],
+      "properties": {
+        "source": {
+          "type": "string",
+          "enum": [
+            "input",
+            "observed",
+            "derived",
+            "reference",
+            "clock",
+            "state"
+          ]
+        },
+        "signal": {
+          "$ref": "#/$defs/NonEmptyString"
+        },
+        "offset": {
+          "type": "number"
+        },
+        "scale": {
+          "type": "number"
+        }
+      }
+    },
+    "ValueOperand": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "value"
+      ],
+      "properties": {
+        "value": {
+          "type": [
+            "string",
+            "number",
+            "integer",
+            "boolean",
+            "null"
+          ]
+        }
+      }
+    },
+    "Action": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "action"
+      ],
+      "properties": {
+        "action": {
+          "type": "string",
+          "enum": [
+            "setInput",
+            "setSignal",
+            "callExternalProcessor"
+          ]
+        },
+        "signal": {
+          "type": "string"
+        },
+        "value": {
+          "type": [
+            "string",
+            "number",
+            "integer",
+            "boolean",
+            "null"
+          ]
+        },
+        "processor": {
+          "type": "string"
+        },
+        "applyTiming": {
+          "type": "string",
+          "enum": [
+            "immediate",
+            "nextSample",
+            "blockStart"
+          ]
+        }
+      }
+    }
+  }
+}
