@@ -45,6 +45,7 @@ testflow-dsl/
 │  ├─ 05_backend_strategy.md
 │  ├─ 07_ir_specification.md
 │  ├─ 08_validation_strategy.md
+│  ├─ 09_core_design.md
 │  └─ adr/
 │     └─ ADR-002-adopt-testflow-dsl-nodeeditor-multibackend.md
 ├─ src/
