@@ -15,15 +15,11 @@
 - HILS / SILS / MILS
 - 外部シミュレーション環境
 ```
+作成物
 
-## 2. 方針転換
-
-旧方針は「テストケースJSONを管理し、使用ツールと編集ツールを作る」だった。
-新方針は以下である。
 ```text
 Test Logic DSL + NodeEditor + Multiple Backends
 ```
-これは単なる JSON 管理ツールではない。小さなテストロジック言語と、その編集・検証・実行基盤を作る方針である。
 
 ## 3. 本プロジェクトが解く問題
 
@@ -48,32 +44,7 @@ Test Logic DSL + NodeEditor + Multiple Backends
 - 共通 Result Log
 ```
 
-## 4. OpenTAPとの住み分け
-
-OpenTAP は実行基盤として強い。プラグイン、テストステップ、シーケンス、結果収集などを持つ。
-
-一方で、`testflow-dsl` は以下を主担当とする。
-
-```text
-- ツール非依存のテストロジック表現
-- signalProcessing
-- simulationTime / elapsedBlockSimulationTime
-- runtimeFeedback
-- NodeEditor によるロジック作成
-- Backend 非依存の IR
-```
-
-したがって住み分けは以下である。
-
-```text
-testflow-dsl:
-  テストロジックDSL、NodeEditor、IR、共通仕様
-
-OpenTAP:
-  実行バックエンド候補、機器制御、プラグイン、結果収集
-```
-
-## 5. やらないこと
+## 4. やらないこと
 
 初期段階では以下をやらない。
 

@@ -33,21 +33,7 @@ DSL は特定バックエンドに依存させない。
 - OpenTAPやMATLABに依存しない
 ```
 
-## 4. OpenTAP Backendの位置づけ
-
-OpenTAPは強力な実行基盤であるため、v0.2以降でBackend候補として評価する。
-
-ただし、以下はAdapterまたはPluginが必要になる。
-
-```text
-- simulationTime
-- elapsedBlockSimulationTime
-- signalProcessing
-- runtimeFeedback
-- 共通Result Logへの変換
-```
-
-## 5. Backend Capability
+## 4. Backend Capability
 
 Backendは対応機能を宣言する。
 
@@ -68,7 +54,7 @@ Backendは対応機能を宣言する。
 }
 ```
 
-## 6. Capability Validation
+## 5. Capability Validation
 
 Runtime実行前に、IRがBackendで実行可能か検証する。
 
@@ -82,7 +68,7 @@ Python Runtime Backend capabilities.parallel = false
 実行前エラー
 ```
 
-## 7. Backend Interface
+## 6. Backend Interface
 
 ```text
 getCapabilities() -> BackendCapabilities
@@ -93,17 +79,15 @@ collectResults() -> ResultLog
 exportResult(format) -> file
 ```
 
-## 8. Backendを増やす順番
+## 7. Backendを増やす順番
 
 推奨順：
 
 ```text
 1. Python Runtime
-2. OpenTAP Backend評価
-3. External Tool Backend
-4. C++ Backend
+2. C++ Backend
+3. OpenTAP Backend
+4. External Tool Backend
 5. MATLAB / Simulink Backend
 6. UE / HILS Backend
 ```
-
-OpenTAPを早く評価すべき理由は、v0.2のnested parallelを自作する前に、既存実行基盤でどこまで吸収できるか判断するためである。

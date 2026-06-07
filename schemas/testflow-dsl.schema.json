@@ -302,10 +302,6 @@
         },
         "unit": {
           "type": "string"
-        },
-        "durationMs": {
-          "type": "number",
-          "minimum": 0
         }
       }
     },
@@ -436,12 +432,6 @@
         },
         "signal": {
           "$ref": "#/$defs/NonEmptyString"
-        },
-        "offset": {
-          "type": "number"
-        },
-        "scale": {
-          "type": "number"
         }
       }
     },

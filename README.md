@@ -2,8 +2,6 @@
 
 `testflow-dsl` は、テストロジックをツール非依存に記述し、NodeEditor で編集し、複数バックエンドで実行するための DSL 設計プロジェクトである。
 
-旧方針の「テストケース JSON 管理ツール」から、以下の方針へ切り替える。
-
 ```text
 NodeEditor
   ↓
@@ -29,9 +27,7 @@ Backend Adapter
 | DSL保存形式              | `nodes` / `edges` 型 JSON                                    |
 | 実行方式                 | JSON を直接実行せず、IR に変換してから実行する               |
 | 最初のバックエンド       | Python Runtime                                               |
-| OpenTAP                  | 実行バックエンド候補として後続フェーズで評価する             |
 | NodeEditor               | DSL Core / IR / Runtime PoC の後に MVP を作る                |
-| 旧 testcase-suite schema | 参考資料として活かすが、DSL設計は nodes/edges 型へ再設計する |
 
 ## ディレクトリ構成
 
@@ -47,7 +43,6 @@ testflow-dsl/
 │  ├─ 03_architecture_nodeeditor_jsondsl_backend.md
 │  ├─ 04_roadmap.md
 │  ├─ 05_backend_strategy.md
-│  ├─ 06_migration_from_testcase_json.md
 │  ├─ 07_ir_specification.md
 │  ├─ 08_validation_strategy.md
 │  └─ adr/
@@ -118,5 +113,4 @@ testflow-dsl/
 - NodeEditor の UI 情報と実行意味論は分離する。
 - DSL は Parser / Semantic Validator を通して IR に変換する。
 - Backend は IR を受け取り、自分の capability に応じて compile / run する。
-- OpenTAP は競合相手ではなく、Backend の1つとして扱う。
 - MATLAB/Simulink 依存を避けるため、DSLは特定ツール非依存にする。

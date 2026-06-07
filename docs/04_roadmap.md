@@ -220,8 +220,8 @@ sequence / parallel / nested parallel をDSLに入れる。
 
 ```text
 1. Python Runtime
-2. OpenTAP Backend評価
-3. C++ or external tool backend
+2. C++ or external tool backend
+3. OpenTAP Backend
 4. MATLAB / Simulink backend
 5. UE / HILS backend
 ```
