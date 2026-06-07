@@ -1,0 +1,43 @@
+{
+  "productName": "TestFlow Editor",
+  "version": "0.1.0",
+  "identifier": "dev.testflow.editor",
+  "build": {
+    "frontendDist": "../dist",
+    "devUrl": "http://localhost:1420",
+    "beforeDevCommand": "npm run dev",
+    "beforeBuildCommand": "npm run build"
+  },
+  "app": {
+    "windows": [
+      {
+        "title": "TestFlow Editor",
+        "width": 1280,
+        "height": 800,
+        "resizable": true,
+        "fullscreen": false
+      }
+    ],
+    "security": {
+      "csp": null
+    }
+  },
+  "bundle": {
+    "active": true,
+    "targets": "all",
+    "icon": []
+  },
+  "plugins": {
+    "shell": {
+      "open": true,
+      "commands": {
+        "python3": {
+          "name": "python3",
+          "cmd": "python3",
+          "args": true,
+          "sidecar": false
+        }
+      }
+    }
+  }
+}
