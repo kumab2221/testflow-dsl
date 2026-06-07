@@ -3,6 +3,7 @@
 ## 1. 基本方針
 
 TestFlow DSL は、テストロジックをノードとエッジで表現する JSON DSL である。
+DSL の構造は `nodes[] / edges[]` 型に固定する。
 
 ```text
 Flow
@@ -10,13 +11,11 @@ Flow
 └─ edges[]
 ```
 
-DSL の構造は `nodes[] / edges[]` 型に固定する。
 
 ## 2. JSONは直接実行しない
 
-JSON DSL は保存形式であり、直接実行形式ではない。
-
-処理の流れは以下である。
+JSON DSL は保存形式であり、直接実行形式ではない
+処理の流れは以下である
 
 ```text
 JSON DSL
@@ -92,11 +91,11 @@ evaluation
 
 `enabled=true` の場合、`aggregation` は必須である。
 
-| aggregation | 意味 |
-|---|---|
-| `failIfAnyBlockFails` | いずれかのブロックが FAIL なら全体 FAIL |
-| `passIfAllBlocksPass` | 全ブロックが PASS なら全体 PASS |
-| `customExternalEvaluator` | 外部評価器に委ねる |
+| aggregation               | 意味                                    |
+| ------------------------- | --------------------------------------- |
+| `failIfAnyBlockFails`     | いずれかのブロックが FAIL なら全体 FAIL |
+| `passIfAllBlocksPass`     | 全ブロックが PASS なら全体 PASS         |
+| `customExternalEvaluator` | 外部評価器に委ねる                      |
 
 `enabled=false` の場合、Flow 遷移条件は評価するが最終集計結果は `NOT_EVALUATED` とする。
 
@@ -104,14 +103,14 @@ evaluation
 
 初期対応する node type は以下である。
 
-| type | 役割 |
-|---|---|
-| `start` | フロー開始点 |
-| `end` | フロー終了点 |
-| `block` | テストブロック |
-| `action` | 入力設定などのアクション |
-| `condition` | 条件評価ノード |
-| `timer` | 時間条件ノード |
+| type        | 役割                     |
+| ----------- | ------------------------ |
+| `start`     | フロー開始点             |
+| `end`       | フロー終了点             |
+| `block`     | テストブロック           |
+| `action`    | 入力設定などのアクション |
+| `condition` | 条件評価ノード           |
+| `timer`     | 時間条件ノード           |
 
 将来対応候補：
 
@@ -152,25 +151,25 @@ Edge の `actions[]` に指定する遷移時アクションである。
 
 ```json
 {
-  "action": "setInput",
+  "action": "setBackendInput",
   "signal": "throttle",
   "value": 1.0,
   "applyTiming": "immediate"
 }
 ```
 
-| action | 意味 |
-|---|---|
-| `setInput` | 入力値を設定する |
-| `setSignal` | 信号値を設定する |
-| `callExternalProcessor` | 外部プロセッサを呼び出す |
+| action                  | 意味                                                         |
+| ----------------------- | ------------------------------------------------------------ |
+| `setBackendInput`       | Backend の入力ポートの値を変更する                           |
+| `setInternalSignal`     | DSL 内部の信号ストア・派生信号・参照信号・作業変数を変更する |
+| `callExternalProcessor` | 外部プロセッサを呼び出す                                     |
 
 `applyTiming` はアクション適用タイミングである。
 
-| applyTiming | 意味 |
-|---|---|
-| `immediate` | 即時適用 |
-| `nextSample` | 次サンプル適用 |
+| applyTiming  | 意味               |
+| ------------ | ------------------ |
+| `immediate`  | 即時適用           |
+| `nextSample` | 次サンプル適用     |
 | `blockStart` | ブロック開始時適用 |
 
 ## 10. Condition
@@ -199,16 +198,16 @@ not
 
 `operator` の種類：
 
-| operator | 意味 |
-|---|---|
-| `equals` | == |
-| `notEquals` | != |
-| `greaterThan` | > |
-| `greaterThanOrEqual` | >= |
-| `lessThan` | < |
-| `lessThanOrEqual` | <= |
-| `risingEdge` | 立ち上がりエッジ |
-| `fallingEdge` | 立ち下がりエッジ |
+| operator             | 意味             |
+| -------------------- | ---------------- |
+| `equals`             | ==               |
+| `notEquals`          | !=               |
+| `greaterThan`        | >                |
+| `greaterThanOrEqual` | >=               |
+| `lessThan`           | <                |
+| `lessThanOrEqual`    | <=               |
+| `risingEdge`         | 立ち上がりエッジ |
+| `fallingEdge`        | 立ち下がりエッジ |
 
 ### 10.2 timeout
 
@@ -223,12 +222,12 @@ not
 
 `clock` の種類：
 
-| clock | 意味 |
-|---|---|
-| `elapsedBlockSimulationTime` | ブロック開始からの経過シミュレーション時間 |
-| `simulationTime` | シミュレーション開始からの絶対シミュレーション時間 |
-| `wallClockTime` | 実時間（壁時計） |
-| `sampleIndex` | サンプルインデックス |
+| clock                        | 意味                                               |
+| ---------------------------- | -------------------------------------------------- |
+| `elapsedBlockSimulationTime` | ブロック開始からの経過シミュレーション時間         |
+| `simulationTime`             | シミュレーション開始からの絶対シミュレーション時間 |
+| `wallClockTime`              | 実時間（壁時計）                                   |
+| `sampleIndex`                | サンプルインデックス                               |
 
 `unit` は `s`、`ms`、`sample` を取れる。
 
@@ -244,14 +243,14 @@ not
 
 `source` の種類：
 
-| source | 意味 |
-|---|---|
-| `input` | 入力信号 |
-| `observed` | 観測信号 |
-| `derived` | 導出信号 |
-| `reference` | 参照値 |
-| `clock` | クロック信号 |
-| `state` | 状態値 |
+| source         | 意味                                                            |
+| -------------- | --------------------------------------------------------------- |
+| `backendInput` | Backend入力ポートへ渡す信号。setBackendInput により設定される   |
+| `observed`     | Backend出力ポート・Backend状態値を読む                          |
+| `internal`     | DSL内部の信号・変数・状態値。setInternalSignal により設定される |
+| `derived`      | 補間・テーブル参照・外部処理などで導出された信号                |
+| `reference`    | 目標値・期待値・基準値                                          |
+| `clock`        | simulationTime、elapsedBlockSimulationTime、sampleIndex など    |
 
 **ValueOperand** — 定数値：
 

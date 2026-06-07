@@ -422,12 +422,12 @@
         "source": {
           "type": "string",
           "enum": [
-            "input",
+            "backendInput",
             "observed",
+            "internal",
             "derived",
             "reference",
-            "clock",
-            "state"
+            "clock"
           ]
         },
         "signal": {
@@ -463,8 +463,8 @@
         "action": {
           "type": "string",
           "enum": [
-            "setInput",
-            "setSignal",
+            "setBackendInput",
+            "setInternalSignal",
             "callExternalProcessor"
           ]
         },
