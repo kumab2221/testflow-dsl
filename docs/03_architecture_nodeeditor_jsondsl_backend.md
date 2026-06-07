@@ -23,16 +23,16 @@ Backend Adapter
 
 ## 2. 各層の責務
 
-| 層 | 責務 |
-|---|---|
-| NodeEditor | DSLを視覚的に編集する |
-| JSON DSL | 保存形式、Git管理対象 |
-| JSON Schema | 構文レベルの検証 |
-| Parser | JSON DSLを内部モデルへ変換する |
+| 層                 | 責務                                       |
+| ------------------ | ------------------------------------------ |
+| NodeEditor         | DSLを視覚的に編集する                      |
+| JSON DSL           | 保存形式、Git管理対象                      |
+| JSON Schema        | 構文レベルの検証                           |
+| Parser             | JSON DSLを内部モデルへ変換する             |
 | Semantic Validator | 信号参照、型、接続、到達性、競合を検証する |
-| IR | Backend非依存の中間表現 |
-| Backend Adapter | IRを各実行環境へ変換・実行する |
-| Result Logger | 共通結果ログを出力する |
+| IR                 | Backend非依存の中間表現                    |
+| Backend Adapter    | IRを各実行環境へ変換・実行する             |
+| Result Logger      | 共通結果ログを出力する                     |
 
 ## 3. JSONを直接実行しない理由
 
@@ -80,22 +80,6 @@ Backend は対応機能を宣言する。
 }
 ```
 
-OpenTAP Backend の例：
-
-```json
-{
-  "backend": "opentap",
-  "capabilities": {
-    "sequence": true,
-    "parallel": true,
-    "nestedParallel": true,
-    "simulationTime": "plugin-required",
-    "runtimeFeedback": "plugin-required",
-    "externalProcessor": true
-  }
-}
-```
-
 ## 6. NodeEditorの役割
 
 NodeEditor は DSL を作るためのUIであり、実行エンジンではない。
@@ -122,24 +106,3 @@ NodeEditor MVP で必要な機能：
 - 履歴管理
 ```
 
-## 7. OpenTAPとの関係
-
-OpenTAP は Backend の1つとして扱う。
-
-```text
-TestFlow DSL
-  ↓
-OpenTAP Adapter
-  ↓
-OpenTAP Test Plan / Test Step
-  ↓
-OpenTAP Runtime
-```
-
-OpenTAPを前提にDSLを歪めない。OpenTAPへ変換できる範囲は Adapter が吸収する。
-
-## 8. MATLAB/Simulinkとの関係
-
-MATLAB/Simulink は Backend 候補の1つであり、前提条件にはしない。
-
-目的は、MATLABバージョン依存からテストロジックを切り離すことである。

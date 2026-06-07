@@ -20,31 +20,6 @@ NodeEditor
 Parallel / Multiple Backends
 ```
 
-## Phase 0: 方針再定義
-
-目的：
-
-```text
-プロジェクトを testcase JSON tools から testflow-dsl へ切り替える。
-```
-
-成果物：
-
-```text
-README.md
-docs/01_project_concept.md
-docs/03_architecture_nodeeditor_jsondsl_backend.md
-docs/adr/ADR-002-adopt-testflow-dsl-nodeeditor-multibackend.md
-```
-
-完了条件：
-
-```text
-- プロジェクト名が testflow-dsl として定義されている
-- JSON DSL + NodeEditor + Multiple Backends 方針が文書化されている
-- OpenTAPとの住み分けが明確である
-```
-
 ## Phase 1: DSL Core
 
 目的：
