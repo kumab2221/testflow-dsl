@@ -1,0 +1,10 @@
+build/
+.cache/
+CMakeFiles/
+CMakeCache.txt
+cmake_install.cmake
+Makefile
+*.o
+*.a
+testflow_editor
+testflow_editor.exe
